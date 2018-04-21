@@ -1,17 +1,11 @@
-FROM alpine:latest
+FROM alpine:3.7
 MAINTAINER Uri Savelchev <alterrebe@gmail.com>
 
 # Add files
-ADD conf /root/conf
-
-# Configure: supervisor
-ADD bin/dfg.sh /usr/local/bin/
-ADD conf/supervisor-all.ini /etc/supervisor.d/
-# Runner
-ADD run.sh /root/run.sh
+COPY ./rootfs /
 
 # Packages: update
-RUN apk -U add postfix ca-certificates libsasl py-pip supervisor rsyslog && \
+RUN apk --no-cache add postfix ca-certificates libsasl py-pip supervisor rsyslog && \
     pip install j2cli && \
     mkfifo /var/spool/postfix/public/pickup && \
     ln -s /etc/postfix/aliases /etc/aliases && \
