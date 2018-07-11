@@ -42,4 +42,4 @@ recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = ipv4
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
-
+allow_min_users = yes
