@@ -1,6 +1,8 @@
 smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
 biff = no
 
+allow_min_users = yes
+
 # appending .domain is the MUA's job.
 append_dot_mydomain = no
 
@@ -21,11 +23,6 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 smtp_tls_wrappermode = yes
 {% endif %}
 
-smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
-smtpd_use_tls=yes
-smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
-
 # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
 # information on enabling SSL in the smtp client.
 
@@ -43,3 +40,26 @@ inet_interfaces = all
 inet_protocols = ipv4
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 
+################################################
+# TLS smtpd daemon configuration
+################################################
+smtpd_tls_CApath = {{ SERVER_CA_PATH }}
+smtpd_tls_CAfile = {{ SERVER_CA_FILE }}
+smtpd_tls_cert_file = {{ SERVER_CERT_FILE }}
+smtpd_tls_key_file = {{ SERVER_KEY_FILE }}
+smtpd_tls_mandatory_exclude_ciphers = aNULL
+
+smtpd_tls_loglevel = 1
+smtpd_tls_received_header = yes
+smtpd_tls_security_level = {{ SERVER_SEC_LEVEL }}
+
+smtpd_use_tls={{ SERVER_USE_TLS }}
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+
+# SASL SUPPORT FOR CLIENTS
+# The following options set parameters needed by Postfix to enable 
+# Cyrus-SASL support for authentication of mail clients. 
+# 
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname

@@ -14,6 +14,13 @@ export ACCEPTED_NETWORKS=${ACCEPTED_NETWORKS:-"192.168.0.0/16 172.16.0.0/12 10.0
 export USE_TLS=${USE_TLS:-"no"}
 export TLS_VERIFY=${TLS_VERIFY:-"may"}
 
+export SERVER_CA_PATH=${SERVER_CA_PATH:-"/etc/ssl/certs"}
+export SERVER_CA_FILE=${SERVER_CA_FILE:-"/etc/ssl/certs/CAfile"}
+export SERVER_CERT_FILE=${SERVER_CERT_FILE:-"/etc/ssl/smtp.pem"}
+export SERVER_KEY_FILE=${SERVER_KEY_FILE:-"/etc/ssl/smtp.key"}
+export SERVER_SEC_LEVEL=${SERVER_SEC_LEVEL:-"may"}
+export SERVER_USE_TLS=${SERVER_USE_TLS:-"no"}
+
 echo $RELAY_HOST_NAME > /etc/mailname
 
 # Templates
