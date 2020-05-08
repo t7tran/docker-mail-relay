@@ -36,6 +36,12 @@ relayhost = {{ EXT_RELAY_HOST }}:{{ EXT_RELAY_PORT }}
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 {{ ACCEPTED_NETWORKS }}
 mailbox_size_limit = 0
 recipient_delimiter = +
+{%- if RECIPIENT_CANONICAL_MAPS is defined and RECIPIENT_CANONICAL_MAPS|length %}
+recipient_canonical_maps = regexp:{{ RECIPIENT_CANONICAL_MAPS }}
+{%- endif %}
+{%- if RECIPIENT_CANONICAL_CLASSES is defined and RECIPIENT_CANONICAL_CLASSES|length %}
+recipient_canonical_classes = {{ RECIPIENT_CANONICAL_CLASSES }}
+{%- endif %}
 inet_interfaces = all
 inet_protocols = ipv4
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
