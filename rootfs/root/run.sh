@@ -1,4 +1,4 @@
-#! /usr/bin/env ash
+#! /usr/bin/env bash
 set -e # exit on error
 
 # Variables
@@ -24,6 +24,10 @@ export SERVER_USE_TLS=${SERVER_USE_TLS:-"no"}
 echo $RELAY_HOST_NAME > /etc/mailname
 
 # Templates
+
+[[ -n "$RECIPIENT_CANONICAL_MAPS" && -f "${RECIPIENT_CANONICAL_MAPS#*:}" ]] && postmap "${RECIPIENT_CANONICAL_MAPS#*:}"
+[[ -n "$SENDER_BCC_MAPS" && -f "${SENDER_BCC_MAPS#*:}" ]] && postmap "${SENDER_BCC_MAPS#*:}"
+
 j2 /root/conf/postfix-main.cf > /etc/postfix/main.cf
 j2 /root/conf/sasl_passwd > /etc/postfix/sasl_passwd
 postmap /etc/postfix/sasl_passwd
