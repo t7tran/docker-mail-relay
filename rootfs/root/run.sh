@@ -25,7 +25,7 @@ echo $RELAY_HOST_NAME > /etc/mailname
 
 # Templates
 
-for f in $RECIPIENT_CANONICAL_MAPS $SENDER_BCC_MAPS $SMTP_HEADER_CHECKS; do
+for f in $RECIPIENT_CANONICAL_MAPS $SENDER_BCC_MAPS $HEADER_CHECKS $SMTP_HEADER_CHECKS; do
 	[[ -n "$f" && -f "${f#*:}" && "$f" == *map ]] && postmap "${f#*:}"
 done
 
