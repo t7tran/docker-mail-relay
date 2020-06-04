@@ -25,8 +25,9 @@ echo $RELAY_HOST_NAME > /etc/mailname
 
 # Templates
 
-[[ -n "$RECIPIENT_CANONICAL_MAPS" && -f "${RECIPIENT_CANONICAL_MAPS#*:}" ]] && postmap "${RECIPIENT_CANONICAL_MAPS#*:}"
-[[ -n "$SENDER_BCC_MAPS" && -f "${SENDER_BCC_MAPS#*:}" ]] && postmap "${SENDER_BCC_MAPS#*:}"
+for f in $RECIPIENT_CANONICAL_MAPS $SENDER_BCC_MAPS $SMTP_HEADER_CHECKS; do
+	postmap "${f#*:}"
+done
 
 j2 /root/conf/postfix-main.cf > /etc/postfix/main.cf
 j2 /root/conf/sasl_passwd > /etc/postfix/sasl_passwd

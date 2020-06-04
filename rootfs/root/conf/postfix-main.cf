@@ -45,6 +45,9 @@ recipient_canonical_classes = {{ RECIPIENT_CANONICAL_CLASSES }}
 {%- if SENDER_BCC_MAPS is defined and SENDER_BCC_MAPS|length %}
 sender_bcc_maps = {{ SENDER_BCC_MAPS }}
 {%- endif %}
+{%- if SMTP_HEADER_CHECKS is defined and SMTP_HEADER_CHECKS|length %}
+stmp_header_checks = {{ SMTP_HEADER_CHECKS }}
+{%- endif %}
 inet_interfaces = all
 inet_protocols = ipv4
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
