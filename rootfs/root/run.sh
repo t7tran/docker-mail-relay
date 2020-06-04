@@ -26,7 +26,7 @@ echo $RELAY_HOST_NAME > /etc/mailname
 # Templates
 
 for f in $RECIPIENT_CANONICAL_MAPS $SENDER_BCC_MAPS $SMTP_HEADER_CHECKS; do
-	postmap "${f#*:}"
+	[[ -n "$f" && -f "${f#*:}" && "$f" == *map ]] && postmap "${f#*:}"
 done
 
 j2 /root/conf/postfix-main.cf > /etc/postfix/main.cf
