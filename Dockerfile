@@ -5,7 +5,7 @@ MAINTAINER Uri Savelchev <alterrebe@gmail.com>
 COPY ./rootfs /
 
 # Packages: update
-RUN apk --no-cache add postfix ca-certificates libsasl py-pip supervisor rsyslog && \
+RUN apk --no-cache add postfix postfix-pcre ca-certificates libsasl py-pip supervisor rsyslog && \
     pip install j2cli && \
     mkfifo /var/spool/postfix/public/pickup && \
     ln -s /etc/postfix/aliases /etc/aliases && \
