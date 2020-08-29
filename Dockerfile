@@ -1,11 +1,11 @@
-FROM alpine:3.7
+FROM alpine:3.12
 MAINTAINER Uri Savelchev <alterrebe@gmail.com>
 
 # Add files
 COPY ./rootfs /
 
 # Packages: update
-RUN apk --no-cache add postfix postfix-pcre ca-certificates libsasl py-pip supervisor rsyslog && \
+RUN apk --no-cache add postfix postfix-pcre ca-certificates libsasl py-pip supervisor rsyslog bash && \
     pip install j2cli && \
     mkfifo /var/spool/postfix/public/pickup && \
     ln -s /etc/postfix/aliases /etc/aliases && \
