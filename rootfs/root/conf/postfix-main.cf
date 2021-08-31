@@ -18,7 +18,7 @@ smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
 smtp_use_tls = {{ USE_TLS }}
 smtp_tls_security_level = {{ TLS_VERIFY }}
 smtp_tls_note_starttls_offer = yes
-smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtp_tls_session_cache_database = dbm:${data_directory}/smtp_scache
 {% if EXT_RELAY_PORT == "465" %}
 smtp_tls_wrappermode = yes
 {% endif %}
@@ -69,7 +69,7 @@ smtpd_tls_received_header = yes
 smtpd_tls_security_level = {{ SERVER_SEC_LEVEL }}
 
 smtpd_use_tls={{ SERVER_USE_TLS }}
-smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtpd_tls_session_cache_database = dbm:${data_directory}/smtpd_scache
 
 # SASL SUPPORT FOR CLIENTS
 # The following options set parameters needed by Postfix to enable 
