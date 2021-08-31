@@ -84,3 +84,10 @@ smtpd_sasl_path = smtpd
 smtpd_tls_auth_only = yes
 smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
 {%- endif %}
+
+{%- if SERVER_TLS_PROTOCOLS is defined %}
+smtpd_tls_protocols = {{ SERVER_TLS_PROTOCOLS }}
+{%- endif %}
+{%- if SERVER_TLS_MANDATORY_PROTOCOLS is defined %}
+smtpd_tls_mandatory_protocols = {{ SERVER_TLS_MANDATORY_PROTOCOLS }}
+{%- endif %}
