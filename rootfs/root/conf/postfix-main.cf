@@ -81,7 +81,7 @@ smtpd_sasl_security_options = noanonymous
 {%- if SMTPD_LOGIN is defined %}
 cyrus_sasl_config_path = /etc/sasl2/
 smtpd_sasl_path = smtpd
-smtpd_tls_auth_only = yes
+smtpd_tls_auth_only = no
 smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
 {%- endif %}
 
