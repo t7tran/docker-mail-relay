@@ -31,9 +31,10 @@ done
 
 j2 /root/conf/postfix-main.cf > /etc/postfix/main.cf
 j2 /root/conf/sasl_passwd > /etc/postfix/sasl_passwd
-postmap /etc/postfix/sasl_passwd
+postmap lmdb:/etc/postfix/sasl_passwd
 # /etc/sasldb2
 echo ${SMTPD_PASSWORD:-s0meP4s5} | saslpasswd2 -c -p -u ${RELAY_HOST_NAME} ${SMTPD_LOGIN:-sender}
+postalias /etc/postfix/aliases
 
 # Launch
 rm -f /var/spool/postfix/pid/*.pid
