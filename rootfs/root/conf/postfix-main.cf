@@ -1,7 +1,7 @@
 smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
 biff = no
 
-allow_min_users = yes
+allow_min_user = yes
 
 # appending .domain is the MUA's job.
 append_dot_mydomain = no
@@ -76,5 +76,11 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 # Cyrus-SASL support for authentication of mail clients. 
 # 
 smtpd_sasl_auth_enable = yes
-smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
+smtpd_sasl_security_options = noanonymous
+{%- if SMTPD_LOGIN is defined %}
+cyrus_sasl_config_path = /etc/sasl2/
+smtpd_sasl_path = smtpd
+smtpd_tls_auth_only = yes
+smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
+{%- endif %}
