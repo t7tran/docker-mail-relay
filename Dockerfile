@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.17
 MAINTAINER Uri Savelchev <alterrebe@gmail.com>
 
 # Add files
