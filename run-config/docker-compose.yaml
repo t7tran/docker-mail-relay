@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  relay:
+    image: ghcr.io/t7tran/mail-relay:2.0.0
+    environment:
+      EXT_RELAY_HOST: mailhog
+      EXT_RELAY_PORT: 1025
+      RELAY_HOST_NAME: relay
+      SMTP_LOGIN: mailhog
+      SMTP_PASSWORD: mailhog
+      HEADER_CHECKS: "regexp:/opt/header_checks.map"
+      CUSTOM_TRANSPORT_MAPS: "lmdb:/opt/custom_transport.map.template"
+      CUSTOM_TRANSPORT_1_NAME: "custom_transport1"
+      CUSTOM_TRANSPORT_1_HEADER_CHECKS: "regexp:/opt/custom_transport1.header_checks.map"
+      CUSTOM_TRANSPORT_2_NAME: "custom_transport2"
+      CUSTOM_TRANSPORT_2_HEADER_CHECKS: "regexp:/opt/custom_transport2.header_checks.map"
+    volumes:
+      - ./header_checks.map:/opt/header_checks.map
+      - ./custom_transport1.header_checks.map:/opt/custom_transport1.header_checks.map
+      - ./custom_transport2.header_checks.map:/opt/custom_transport2.header_checks.map
+      - ./custom_transport.map.template:/opt/custom_transport.map.template
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    logging:
+      driver: "none" # disable saving logs
+    ports:
+      - 8025:8025 # web ui

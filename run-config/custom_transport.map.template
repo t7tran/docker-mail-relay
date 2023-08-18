@@ -1,0 +1,3 @@
+admin@example.com    custom_transport1:[{{ EXT_RELAY_HOST }}]:{{ EXT_RELAY_PORT }}
+example.com          custom_transport2:[{{ EXT_RELAY_HOST }}]:{{ EXT_RELAY_PORT }}
+*                    smtp:[{{ EXT_RELAY_HOST }}]:{{ EXT_RELAY_PORT }}

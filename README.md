@@ -35,5 +35,41 @@ Example
 
 Launch Postfix container:
 
-    $ docker run -d -h relay.example.com --name="mailrelay" -e SMTP_LOGIN=myLogin -e SMTP_PASSWORD=myPassword -p 25:25 alterrebe/postfix-relay
+    $ docker run -d -h relay.example.com --name="mailrelay" -e SMTP_LOGIN=myLogin -e SMTP_PASSWORD=myPassword -p 25:25 ghcr.io/t7tran/mail-relay:2.0.0
 
+Or using docker-compose
+
+```
+cd run-config
+docker-compose up
+
+# send a test email using custom transport 1
+docker-compose exec relay smtp-cli --verbose \
+    --disable-starttls \
+    --server=localhost:25 \
+    --from testsender@example.com \
+    --to admin@example.com \
+    --subject "Test Custom Transport 1" \
+    --body-plain "The email received must have [Custom1] prefix."
+
+# send a test email using custom transport 2
+docker-compose exec relay smtp-cli --verbose \
+    --disable-starttls \
+    --server=localhost:25 \
+    --from testsender@example.com \
+    --to testreceiver@example.com \
+    --subject "Test Custom Transport 2" \
+    --body-plain "The email received must have [Custom2] prefix."
+
+# send a test email using default transport
+docker-compose exec relay smtp-cli --verbose \
+    --disable-starttls \
+    --server=localhost:25 \
+    --from testsender@standardmail.com \
+    --to testreceiver@standardmail.com \
+    --subject "Test Default Transport" \
+    --body-plain "The email received must have no prefix."
+
+# check emails at http://localhost:8025
+
+```

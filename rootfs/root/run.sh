@@ -25,11 +25,27 @@ echo $RELAY_HOST_NAME > /etc/mailname
 
 # Templates
 
-for f in $RECIPIENT_CANONICAL_MAPS $SENDER_BCC_MAPS $HEADER_CHECKS $SMTP_HEADER_CHECKS; do
-	[[ -n "$f" && -f "${f#*:}" && "$f" == *map ]] && postmap "${f#*:}"
+compile() {
+    if [[ -n "$1" ]]; then
+		filePath=${1#*:}
+		if [[ "$filePath" == *.template ]]; then
+			j2 "$filePath" > ${filePath%.template}
+			filePath=${filePath%.template}
+		fi
+		[[ -f "${filePath}" && "$filePath" == *map ]] && postmap -o "${filePath}"
+	fi
+}
+
+for f in $RECIPIENT_CANONICAL_MAPS $SENDER_BCC_MAPS $HEADER_CHECKS $SMTP_HEADER_CHECKS $CUSTOM_TRANSPORT_MAPS; do
+    compile "$f"
+done
+for i in {1..10}; do
+	var=CUSTOM_TRANSPORT_${i}_HEADER_CHECKS
+    compile "${!var}"
 done
 
 j2 /root/conf/postfix-main.cf > /etc/postfix/main.cf
+j2 /root/conf/postfix-master.cf > /etc/postfix/master.cf
 j2 /root/conf/sasl_passwd > /etc/postfix/sasl_passwd
 postmap lmdb:/etc/postfix/sasl_passwd
 # /etc/sasldb2

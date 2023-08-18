@@ -1,0 +1,2 @@
+/^mail-transport:(.+)$/i REPLACE mail-transport: custom1
+/^Subject:(.*)/ REPLACE Subject: [Custom1]$1

@@ -32,24 +32,26 @@ alias_maps = lmdb:/etc/postfix/aliases
 alias_database = lmdb:/etc/postfix/aliases
 myorigin = /etc/mailname
 mydestination = {{ RELAY_HOST_NAME }}, localhost
+{%- if not ( CUSTOM_TRANSPORT_MAPS is defined and CUSTOM_TRANSPORT_MAPS|length ) %}
 relayhost = {{ EXT_RELAY_HOST }}:{{ EXT_RELAY_PORT }}
+{%- endif %}
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 {{ ACCEPTED_NETWORKS }}
 mailbox_size_limit = 0
 recipient_delimiter = +
 {%- if RECIPIENT_CANONICAL_MAPS is defined and RECIPIENT_CANONICAL_MAPS|length %}
-recipient_canonical_maps = {{ RECIPIENT_CANONICAL_MAPS }}
+recipient_canonical_maps = {{ RECIPIENT_CANONICAL_MAPS[:-9] if RECIPIENT_CANONICAL_MAPS.endswith(".template") else RECIPIENT_CANONICAL_MAPS }}
 {%- endif %}
 {%- if RECIPIENT_CANONICAL_CLASSES is defined and RECIPIENT_CANONICAL_CLASSES|length %}
 recipient_canonical_classes = {{ RECIPIENT_CANONICAL_CLASSES }}
 {%- endif %}
 {%- if SENDER_BCC_MAPS is defined and SENDER_BCC_MAPS|length %}
-sender_bcc_maps = {{ SENDER_BCC_MAPS }}
+sender_bcc_maps = {{ SENDER_BCC_MAPS[:-9] if SENDER_BCC_MAPS.endswith(".template") else SENDER_BCC_MAPS }}
 {%- endif %}
 {%- if HEADER_CHECKS is defined and HEADER_CHECKS|length %}
-header_checks = {{ HEADER_CHECKS }}
+header_checks = {{ HEADER_CHECKS[:-9] if HEADER_CHECKS.endswith(".template") else HEADER_CHECKS }}
 {%- endif %}
 {%- if SMTP_HEADER_CHECKS is defined and SMTP_HEADER_CHECKS|length %}
-stmp_header_checks = {{ SMTP_HEADER_CHECKS }}
+stmp_header_checks = {{ SMTP_HEADER_CHECKS[:-9] if SMTP_HEADER_CHECKS.endswith(".template") else SMTP_HEADER_CHECKS }}
 {%- endif %}
 inet_interfaces = all
 inet_protocols = ipv4
@@ -90,4 +92,8 @@ smtpd_tls_protocols = {{ SERVER_TLS_PROTOCOLS }}
 {%- endif %}
 {%- if SERVER_TLS_MANDATORY_PROTOCOLS is defined %}
 smtpd_tls_mandatory_protocols = {{ SERVER_TLS_MANDATORY_PROTOCOLS }}
+{%- endif %}
+
+{%- if CUSTOM_TRANSPORT_MAPS is defined and CUSTOM_TRANSPORT_MAPS|length %}
+transport_maps = {{ CUSTOM_TRANSPORT_MAPS[:-9] if CUSTOM_TRANSPORT_MAPS.endswith(".template") else CUSTOM_TRANSPORT_MAPS }}
 {%- endif %}
