@@ -46,6 +46,8 @@ docker-compose up
 # send a test email using custom transport 1
 docker-compose exec relay smtp-cli --verbose \
     --disable-starttls \
+    --user=client \
+    --pass=p4ssword \
     --server=localhost:25 \
     --from testsender@example.com \
     --to admin@example.com \
@@ -55,6 +57,8 @@ docker-compose exec relay smtp-cli --verbose \
 # send a test email using custom transport 2
 docker-compose exec relay smtp-cli --verbose \
     --disable-starttls \
+    --user=client \
+    --pass=p4ssword \
     --server=localhost:25 \
     --from testsender@example.com \
     --to testreceiver@example.com \
@@ -64,6 +68,8 @@ docker-compose exec relay smtp-cli --verbose \
 # send a test email using default transport
 docker-compose exec relay smtp-cli --verbose \
     --disable-starttls \
+    --user=client \
+    --pass=p4ssword \
     --server=localhost:25 \
     --from testsender@standardmail.com \
     --to testreceiver@standardmail.com \

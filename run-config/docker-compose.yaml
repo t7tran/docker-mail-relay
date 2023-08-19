@@ -4,11 +4,13 @@ services:
   relay:
     image: ghcr.io/t7tran/mail-relay:2.0.0
     environment:
-      EXT_RELAY_HOST: mailhog
-      EXT_RELAY_PORT: 1025
+      EXT_RELAY_HOST: emailrelay
+      EXT_RELAY_PORT: 587
       RELAY_HOST_NAME: relay
-      SMTP_LOGIN: mailhog
-      SMTP_PASSWORD: mailhog
+      SMTPD_LOGIN: client
+      SMTPD_PASSWORD: p4ssword
+      SMTP_LOGIN: sender
+      SMTP_PASSWORD: p4ssword
       HEADER_CHECKS: "regexp:/opt/header_checks.map"
       CUSTOM_TRANSPORT_MAPS: "lmdb:/opt/custom_transport.map.template"
       CUSTOM_TRANSPORT_1_NAME: "custom_transport1"
@@ -16,10 +18,23 @@ services:
       CUSTOM_TRANSPORT_2_NAME: "custom_transport2"
       CUSTOM_TRANSPORT_2_HEADER_CHECKS: "regexp:/opt/custom_transport2.header_checks.map"
     volumes:
+      # - ../rootfs/root/conf:/root/conf
       - ./header_checks.map:/opt/header_checks.map
       - ./custom_transport1.header_checks.map:/opt/custom_transport1.header_checks.map
       - ./custom_transport2.header_checks.map:/opt/custom_transport2.header_checks.map
       - ./custom_transport.map.template:/opt/custom_transport.map.template
+  emailrelay:
+    image: dcagatay/emailrelay:2.5
+    command:
+      - --forward-on-disconnect
+      - --forward-to
+      - mailhog:1025
+      - --server-auth
+      - /emailrelay-auth.txt
+    environment:
+      PORT: 587
+    volumes:
+      - ./emailrelay-auth.txt:/emailrelay-auth.txt
   mailhog:
     image: mailhog/mailhog:v1.0.1
     logging:
