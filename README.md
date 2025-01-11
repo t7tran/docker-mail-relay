@@ -35,7 +35,7 @@ Example
 
 Launch Postfix container:
 
-    $ docker run -d -h relay.example.com --name="mailrelay" -e SMTP_LOGIN=myLogin -e SMTP_PASSWORD=myPassword -p 25:25 ghcr.io/t7tran/mail-relay:2.0.0
+    $ docker run -d -h relay.example.com --name="mailrelay" -e SMTP_LOGIN=myLogin -e SMTP_PASSWORD=myPassword -p 25:25 ghcr.io/t7tran/mail-relay:2.1.0
 
 Or using docker-compose
 
@@ -75,6 +75,17 @@ docker-compose exec relay smtp-cli --verbose \
     --to testreceiver@standardmail.com \
     --subject "Test Default Transport" \
     --body-plain "The email received must have no prefix."
+
+# send a test email using default transport
+docker-compose exec relay smtp-cli --verbose \
+    --disable-starttls \
+    --user=client \
+    --pass=p4ssword \
+    --server=localhost:25 \
+    --from testsender@standardmail.com \
+    --to testreceiver@standardmail.com \
+    --subject "Test body_checks" \
+    --body-plain /opt/body.txt
 
 # check emails at http://localhost:8025
 

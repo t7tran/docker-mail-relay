@@ -1,8 +1,6 @@
-version: "3.7"
-
 services:
   relay:
-    image: ghcr.io/t7tran/mail-relay:2.0.0
+    image: ghcr.io/t7tran/mail-relay:2.1.0
     environment:
       EXT_RELAY_HOST: emailrelay
       EXT_RELAY_PORT: 587
@@ -12,6 +10,7 @@ services:
       SMTP_LOGIN: sender
       SMTP_PASSWORD: p4ssword
       HEADER_CHECKS: "regexp:/opt/header_checks.map"
+      BODY_CHECKS: "regexp:/opt/body_checks.map"
       CUSTOM_TRANSPORT_MAPS: "lmdb:/opt/custom_transport.map.template"
       CUSTOM_TRANSPORT_1_NAME: "custom_transport1"
       CUSTOM_TRANSPORT_1_HEADER_CHECKS: "regexp:/opt/custom_transport1.header_checks.map"
@@ -19,7 +18,9 @@ services:
       CUSTOM_TRANSPORT_2_HEADER_CHECKS: "regexp:/opt/custom_transport2.header_checks.map"
     volumes:
       # - ../rootfs/root/conf:/root/conf
+      - ./body.txt:/opt/body.txt
       - ./header_checks.map:/opt/header_checks.map
+      - ./body_checks.map:/opt/body_checks.map
       - ./custom_transport1.header_checks.map:/opt/custom_transport1.header_checks.map
       - ./custom_transport2.header_checks.map:/opt/custom_transport2.header_checks.map
       - ./custom_transport.map.template:/opt/custom_transport.map.template

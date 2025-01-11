@@ -1,0 +1,5 @@
+Sample body_checks
+
+This line should be replaced.
+
+The end.
