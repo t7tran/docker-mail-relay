@@ -35,7 +35,7 @@ Example
 
 Launch Postfix container:
 
-    $ docker run -d -h relay.example.com --name="mailrelay" -e SMTP_LOGIN=myLogin -e SMTP_PASSWORD=myPassword -p 25:25 ghcr.io/t7tran/mail-relay:2.1.0
+    $ docker run -d -h relay.example.com --name="mailrelay" -e SMTP_LOGIN=myLogin -e SMTP_PASSWORD=myPassword -p 25:25 ghcr.io/t7tran/mail-relay:3.0.0
 
 Or using docker-compose
 

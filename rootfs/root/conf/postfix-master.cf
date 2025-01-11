@@ -146,13 +146,13 @@ postlog   unix-dgram n  -       n       -       1       postlogd
 #  flags=FRX user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
 #  ${nexthop} ${user}
 
-{%- if CUSTOM_TRANSPORT_MAPS is defined and CUSTOM_TRANSPORT_MAPS|length %}
-{%- for i in range(1,11) %}
-{%- if env("CUSTOM_TRANSPORT_"~i~"_NAME", "") | length %}
-{{ env("CUSTOM_TRANSPORT_"~i~"_NAME", "") }}      unix  -       -       n       -       -       smtp
-{%- if env("CUSTOM_TRANSPORT_"~i~"_HEADER_CHECKS", "") | length %}
-        -o smtp_header_checks={{ env("CUSTOM_TRANSPORT_"~i~"_HEADER_CHECKS")[:-9] if env("CUSTOM_TRANSPORT_"~i~"_HEADER_CHECKS").endswith(".template") else env("CUSTOM_TRANSPORT_"~i~"_HEADER_CHECKS") }}
-{%- endif %}
-{%- endif %}
-{%- endfor %}
-{%- endif %}
+{{- if getenv "CUSTOM_TRANSPORT_MAPS" }}
+{{- range seq 1 11 }}
+{{- if getenv ( print "CUSTOM_TRANSPORT_" . "_NAME" ) }}
+{{ getenv ( print "CUSTOM_TRANSPORT_" . "_NAME" ) }}      unix  -       -       n       -       -       smtp
+{{- if getenv ( print "CUSTOM_TRANSPORT_" . "_HEADER_CHECKS" ) }}
+        -o smtp_header_checks={{ if strings.HasSuffix ".template" ( getenv ( print "CUSTOM_TRANSPORT_" . "_HEADER_CHECKS" ) ) }}{{ coll.GoSlice ( getenv ( print "CUSTOM_TRANSPORT_" . "_HEADER_CHECKS" ) ) 0 (sub (len ( getenv ( print "CUSTOM_TRANSPORT_" . "_HEADER_CHECKS" ) )) 9) }}{{ else }}{{ ( getenv ( print "CUSTOM_TRANSPORT_" . "_HEADER_CHECKS" ) ) }}{{ end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

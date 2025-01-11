@@ -1,11 +1,23 @@
-FROM alpine:3.18.5
+FROM alpine:3.21.2
+
+ENV EXT_RELAY_HOST=email-smtp.us-east-1.amazonaws.com \
+    EXT_RELAY_PORT=25 \
+    RELAY_HOST_NAME=relay.example.com \
+    ACCEPTED_NETWORKS='192.168.0.0/16 172.16.0.0/12 10.0.0.0/8' \
+    USE_TLS=no \
+    TLS_VERIFY=may \
+    SERVER_CA_PATH=/etc/ssl/certs \
+    SERVER_CA_FILE=/etc/ssl/certs/CAfile \
+    SERVER_CERT_FILE=/etc/ssl/smtp.pem \
+    SERVER_KEY_FILE=/etc/ssl/smtp.key \
+    SERVER_SEC_LEVEL=may \
+    SERVER_USE_TLS=no
 
 # Add files
 COPY ./rootfs /
 
 # Packages: update
-RUN apk --no-cache add postfix postfix-pcre ca-certificates libsasl cyrus-sasl py-pip supervisor rsyslog bash && \
-    pip install j2cli && \
+RUN apk --no-cache add postfix postfix-pcre ca-certificates libsasl cyrus-sasl supervisor rsyslog bash gomplate && \
     mkfifo /var/spool/postfix/public/pickup && \
     ln -s /etc/postfix/aliases /etc/aliases && \
     echo test1#2 | saslpasswd2 -c -p -n -u test.com test && \

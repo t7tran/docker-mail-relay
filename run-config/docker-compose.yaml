@@ -1,6 +1,6 @@
 services:
   relay:
-    image: ghcr.io/t7tran/mail-relay:2.1.0
+    image: ghcr.io/t7tran/mail-relay:3.0.0
     environment:
       EXT_RELAY_HOST: emailrelay
       EXT_RELAY_PORT: 587
